@@ -1,0 +1,65 @@
+
+project_name: shll
+builds:
+  - id: shll
+    main: ./cmd/shll/main.go
+    binary: shll
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+
+dist: dist
+
+dockers:
+  - image_templates:
+      - "ghcr.io/{{ .RepoOwner }}/{{ .ProjectName }}:latest"
+    goos: linux
+    goarch:
+      - amd64
+      - arm64
+    dockerfile: Dockerfile
+
+archives:
+  - format: tar.gz
+    files:
+      - LICENSE
+      - README.md
+
+brews:
+  - name: shll
+    tap:
+      owner: yourgithubuser
+      name: homebrew-tap
+    commit_author:
+      name: goreleaserbot
+      email: goreleaser@yourdomain.com
+    homepage: "https://github.com/yourgithubuser/shll"
+    description: "Natural language shell assistant CLI"
+    test: |
+      shll --help
+
+nfpms:
+  - id: deb
+    packager: deb
+    vendor: shll
+    maintainer: yourname <you@example.com>
+    description: Natural language shell assistant CLI
+    homepage: "https://github.com/yourgithubuser/shll"
+    license: MIT
+    formats:
+      - deb
+  - id: rpm
+    packager: rpm
+    vendor: shll
+    maintainer: yourname <you@example.com>
+    description: Natural language shell assistant CLI
+    homepage: "https://github.com/yourgithubuser/shll"
+    license: MIT
+    formats:
+      - rpm
